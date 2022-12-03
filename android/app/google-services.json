@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "532247717709",
+    "project_id": "flut-trial",
+    "storage_bucket": "flut-trial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532247717709:android:8d06389d54003b62393904",
+        "android_client_info": {
+          "package_name": "com.example.trial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532247717709-6d8h7c2acrvvs7m5be6ddbln0t3gitrp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqfXe--8I8AH_Jss168QLRMK90DTgzHgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532247717709-6d8h7c2acrvvs7m5be6ddbln0t3gitrp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
