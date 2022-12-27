@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' show log;
 
 import 'package:trial/constant/route.dart';
+import 'package:trial/services/auth/auth_service.dart';
 
 import '../utilities/show_error_dialog.dart';
+import 'package:trial/services/auth/auth_exceptions.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -37,7 +38,9 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login"),),
+      appBar: AppBar(
+        title: const Text("Login"),
+      ),
       body: Column(
         children: [
           TextField(
@@ -66,59 +69,42 @@ class _LoginViewState extends State<LoginView> {
               try {
                 // we are login in so use sign in
                 // always put await as its a future function
-                await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                    email: email,
-                    password: password
+                await AuthService.firebase().login(
+                  email: email,
+                  password: password,
                 );
-                final user = FirebaseAuth.instance.currentUser;
-                if (user?.emailVerified ?? false){
+                final user = AuthService
+                    .firebase()
+                    .currentUser;
+                if (user?.isEmailVerified ?? false) {
                   //user verified
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     notesRoute,
                         (route) => false,
                   );
-                }
-                else {
+                } else {
                   //user not verified
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     verifyEmailRoute,
                         (route) => false,
                   );
                 }
-
-              } on FirebaseAuthException
-              catch (e) {
-                if (e.code == "user-not-found") {
-                  log('user not found');
-                  await showErrorDialog(
-                      context,
-                      "user not found",
-                  );
-                }
-                else if (e.code == "wrong-password") {
-                  log("wrong password");
-                  await showErrorDialog(
-                      context,
-                      "Wrong Credentials"
-                  );
-                }
-                else {
-                  await showErrorDialog(
-                      context,
-                      "Error: ${e.code}",
-                  );
-                }
-                log(e.runtimeType
-                    .toString()); // give which class of exception this is
-              }
-              //if not a firebaseauth exeption
-              catch (e){
+              } on UserNotFoundAuthException {
                 await showErrorDialog(
-                    context,
-                    e.toString(),
+                  context,
+                  "user not found",
                 );
-
+              } on WrongPassAuthException {
+                log("wrong password");
+                await showErrorDialog(
+                  context,
+                  "Wrong Credentials",
+                );
+              } on GenericAuthException {
+                await showErrorDialog(
+                  context,
+                  "Authentication Error",
+                );
               }
             },
             child: const Text('Login'),
@@ -126,9 +112,8 @@ class _LoginViewState extends State<LoginView> {
           TextButton(
               onPressed: () {
                 //removes everything till new widget
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    registerRoute,
-                        (route) => false);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(registerRoute, (route) => false);
               },
               child: const Text("Not yet registered"))
         ],
@@ -136,6 +121,3 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
-
- 
