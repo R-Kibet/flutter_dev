@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:trial/services/auth/auth_service.dart';
 import 'package:trial/services/crud/notes_service.dart';
-import '../constant/route.dart';
-import '../enums/menu_action.dart';
+import '../../constant/route.dart';
+import '../../enums/menu_action.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({Key? key}) : super(key: key);
@@ -28,7 +28,7 @@ class _NotesViewState extends State<NotesView> {
 
   ///remember to close the db
   @override
-  void dispose() {
+  void dispose()  {
     _notesService.close();
     super.dispose();
   }
@@ -37,9 +37,14 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("main ui"),
+        title: const Text("Trial"),
 
         actions: [
+          IconButton(
+              onPressed: (){
+                Navigator.of(context).pushNamed(newNoteRoute);
+          },
+            icon: const Icon(Icons.add)),
           PopupMenuButton<MenuAction>(
             onSelected: (value) async{
               switch (value){
