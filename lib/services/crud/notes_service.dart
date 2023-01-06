@@ -16,13 +16,19 @@ class NotesService {
   ///SIngletone -
   ///prevents creating many instance of one class causing app crush when reloading
   static final NotesService _shared = NotesService._sharedInstance();
-  NotesService._sharedInstance();
+  NotesService._sharedInstance(){
+   _notesStreamController =  StreamController<List<DatabaseNotes>>.broadcast(
+     onListen: () {
+       _notesStreamController.sink.add(_notes);
+     },
+   );
+  }
 
   //make it public as it is private
   factory NotesService() => _shared;
 
-  final _notesStreamController =
-      StreamController<List<DatabaseNotes>>.broadcast();
+  late final  StreamController<List<DatabaseNotes>> _notesStreamController;
+
   Stream<List<DatabaseNotes>> get allNotes => _notesStreamController.stream;
 
   Future<DatabaseUser> getOrCreateUser({required String email}) async {
