@@ -16,6 +16,7 @@ class NotesService {
   ///SIngletone -
   ///prevents creating many instance of one class causing app crush when reloading
   static final NotesService _shared = NotesService._sharedInstance();
+
   NotesService._sharedInstance(){
    _notesStreamController =  StreamController<List<DatabaseNotes>>.broadcast(
      onListen: () {
