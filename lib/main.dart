@@ -1,8 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
-import 'package:trial/services/auth/auth_service.dart';
 import 'package:trial/services/auth/block/auth_bloc.dart';
 import 'package:trial/services/auth/block/auth_events.dart';
 import 'package:trial/services/auth/block/auth_state.dart';
@@ -14,7 +11,6 @@ import 'package:trial/view/register_view.dart';
 import 'package:trial/view/verify_email.dart';
 
 import 'constant/route.dart';
-import 'firebase_options.dart';
 
 void main()  {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,10 +27,6 @@ void main()  {
       ),
       //ROUTES
       routes: {
-        loginRoute: (context) => const LoginView(),
-        registerRoute: (context) => const RegisterView(),
-        notesRoute: (context) => const NotesView(),
-        verifyEmailRoute: (context) => const verifyEmail(),
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
       },
     ),
@@ -57,6 +49,8 @@ class Homepage extends StatelessWidget {
           return const verifyEmail();
         }else if (state is AuthStateLoggedOut) {
           return const LoginView();
+        }else if (state is AuthStateRegistering){
+         return const RegisterView();
         }else {
           return const Scaffold(
             body: CircularProgressIndicator(),
