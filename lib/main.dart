@@ -5,6 +5,7 @@ import 'package:trial/services/auth/block/auth_bloc.dart';
 import 'package:trial/services/auth/block/auth_events.dart';
 import 'package:trial/services/auth/block/auth_state.dart';
 import 'package:trial/services/auth/firebase_auth_provider.dart';
+import 'package:trial/view/forgot_pasword_view.dart';
 import 'package:trial/view/login_view.dart';
 import 'package:trial/view/notes/create_update_notes_view.dart';
 import 'package:trial/view/notes/notes_view.dart';
@@ -60,6 +61,8 @@ class Homepage extends StatelessWidget {
           return const verifyEmail();
         }else if (state is AuthStateLoggedOut) {
           return const LoginView();
+        }else if (state is AuthStateForgotPassword){
+          return const ForgotPasswordView();
         }else if (state is AuthStateRegistering){
          return const RegisterView();
         }else {
