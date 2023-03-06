@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trial/constant/route.dart';
 import 'package:trial/services/auth/auth_exceptions.dart';
-import 'package:trial/services/auth/auth_service.dart';
 import 'package:trial/services/auth/block/auth_events.dart';
-import 'dart:developer' show log;
 import '../services/auth/block/auth_bloc.dart';
 import '../services/auth/block/auth_state.dart';
 import '../utilities/dialogs/error_dialog.dart';
@@ -13,7 +10,7 @@ class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
 
   @override
-  State<RegisterView> createState() => _RegisterViewState();
+  _RegisterViewState createState() => _RegisterViewState();
 }
 
 class _RegisterViewState extends State<RegisterView> {
@@ -22,7 +19,6 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _email = TextEditingController();
     _password = TextEditingController();
     super.initState();
@@ -60,49 +56,51 @@ class _RegisterViewState extends State<RegisterView> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: _email,
-                enableSuggestions: false,
-                autocorrect: false,
-                autofocus: true,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  hintText: "Enter your Email",
-                ),
-              ),
-              TextField(
-                controller: _password,
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: const InputDecoration(
-                  hintText: "Enter your Password",
-                ),
-              ),
-              TextButton(
-                onPressed: () async {
-                  final email = _email.text;
-                  final password = _password.text;
-                context.read()<AuthBloc>().add(
-                  AuthEventRegister(
-                    email,
-                    password,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _email,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  autofocus: true,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    hintText: "Enter your Email",
                   ),
-                );
-                },
-                child: const Text('Register'),
-              ),
-              TextButton(
-                  onPressed: () {
+                ),
+                TextField(
+                  controller: _password,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: const InputDecoration(
+                    hintText: "Enter your Password",
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    final email = _email.text;
+                    final password = _password.text;
                   context.read<AuthBloc>().add(
-                    const AuthEventLoggOut(),
+                    AuthEventRegister(
+                      email,
+                      password,
+                    ),
                   );
                   },
-                  child: const Text("Login"))
-            ],
+                  child: const Text('Register'),
+                ),
+                TextButton(
+                    onPressed: () {
+                    context.read<AuthBloc>().add(
+                      const AuthEventLoggOut(),
+                    );
+                    },
+                    child: const Text("Login")
+                ),
+              ]),
           ),
         ),
       ),
